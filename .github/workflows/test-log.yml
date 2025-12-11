@@ -6,7 +6,7 @@ jobs:
     steps:
       - name: Wypisz powitanie
         run: echo "Witaj w GitHub Actions!"
-      - name: Informacje o repozytorium
-        run: echo "Branch: ${{ github.ref }} | Repo: ${{ github.repository }}"
-      - name: Status joba
+      - name: Test echo
+        run: echo "Branch: ${{ github.ref }}"
+        run: echo "Repo: ${{ github.repository }}"
         run: echo "Job status: ${{ job.status }}"
