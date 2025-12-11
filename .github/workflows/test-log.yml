@@ -1,0 +1,12 @@
+name: Test Log Output
+on: [push]
+jobs:
+  print-logs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wypisz powitanie
+        run: echo "Witaj w GitHub Actions!"
+      - name: Informacje o repozytorium
+        run: echo "Branch: ${{ github.ref }} | Repo: ${{ github.repository }}"
+      - name: Status joba
+        run: echo "Job status: ${{ job.status }}"
