@@ -1,4 +1,4 @@
-# budowanie Flaska
+// budowanie Flaska
 
 pipeline {
     agent any
