@@ -1,44 +1,19 @@
-// flask uruchomiony z linii poleceń
+// Sprawdzamy instlal Python jako cocker
+
 
 pipeline {
-    agent any
-    
-    
-    stages {
-
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-        
-        
-        stage('Run with venv') {
-            steps {
-                script {
-                        sh '''
-                        python3 -m venv venv
-                        . venv/bin/activate
-                        pip install -r requirements.txt
-                        python3 app.py
-                        '''
-                }
-            }
-        }
-        
-        
-        
-        stage('Verify Deployment') {
-            steps {
-                sh 'sleep 5'
-                sh 'curl -f http://localhost:5000 || exit 1'
-            }
+    agent {
+        docker {
+            image 'python:3.12-slim'
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
         }
     }
-    
-    post {
-        always {
-            sh "docker image prune -f"
+    stages {
+        stage('Test Python') {
+            steps {
+                sh 'python --version'
+                sh 'pip --version'
+            }
         }
     }
 }
