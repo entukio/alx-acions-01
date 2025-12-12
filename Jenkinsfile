@@ -1,5 +1,5 @@
-# podstawowy - tylko wypisanie na ekranie
-# https://www.jenkins.io/doc/book/pipeline/jenkinsfile/
+// podstawowy - tylko wypisanie na ekranie
+// https://www.jenkins.io/doc/book/pipeline/jenkinsfile/
 
 pipeline {
     agent any
