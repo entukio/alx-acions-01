@@ -1,0 +1,51 @@
+name: Zaawansowany Test Logowania i Warunków
+
+# Wyzwala workflow przy każdym pushu do dowolnej gałęzi
+on: [push]
+
+# Zmienne środowiskowe dostępne globalnie dla wszystkich zadań w tym workflow
+env:
+  REPO_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  print-and-test:
+    # Uruchom na najnowszym Ubuntu
+    runs-on: ubuntu-latest
+    
+    # Zmienne środowiskowe tylko dla tego zadania
+    env:
+      BUILD_DATE: ${{ needs.setup-vars.outputs.current_date }}
+
+    steps:
+      - name: Wypisz powitanie
+        run: echo "Witaj w GitHub Actions! Rozpoczynamy testowanie."
+
+      - name: Sprawdź nazwę repozytorium
+        run: echo "Pracujemy w repozytorium: $REPO_NAME"
+        
+      # Krok 1: Checkout kodu (niezbędny, jeśli workflow miałby używać plików z repo)
+      - name: Sprawdź kod z repozytorium (Checkout)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Umożliwia dostęp do pełnej historii Git
+          
+      # Krok 2: Generowanie zmiennej środowiskowej na podstawie czasu
+      - name: Ustaw dynamiczną datę budowania (Zmienna lokalna)
+        # To jest przykład jak ustawić zmienną DYNAMICZNIE W TRAKCIE działania kroku
+        run: echo "DZIEN_TYGODNIA=$(date +%A)" >> $GITHUB_ENV
+
+      # Krok 3: Wykorzystanie zmiennej dynamicznej
+      - name: Wypisz dynamiczną zmienną (Dzień tygodnia)
+        run: echo "Ten workflow uruchomiono w dniu: $DZIEN_TYGODNIA"
+        
+      # Krok 4: Użycie warunku 'if' do pominięcia kroku
+      - name: Ten krok działa tylko w weekend
+        if: env.DZIEN_TYGODNIA == 'Saturday' || env.DZIEN_TYGODNIA == 'Sunday'
+        run: echo "Hurra! Jest weekend. Czas na odpoczynek!"
+      
+      # Krok 5: Pokazanie statusu poprzedniego kroku (zawsze działa)
+      - name: Pokaż status poprzedniego kroku
+        # success(), failure(), cancelled(), always()
+        if: always()
+        run: echo "Status poprzedniego kroku (weekendowy) to: ${{ steps.step4_id.outcome }}"
+        # Aby użyć outcome, musiałbyś nadać ID krokowi: id: step4_id
