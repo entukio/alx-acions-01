@@ -20,9 +20,6 @@ jobs:
       - name: Wypisz powitanie
         run: echo "Witaj w GitHub Actions! Rozpoczynamy testowanie."
 
-      - name: Sprawdź nazwę repozytorium
-        run: echo "Pracujemy w repozytorium: $REPO_NAME"
-        
       # Krok 1: Checkout kodu (niezbędny, jeśli workflow miałby używać plików z repo)
       - name: Sprawdź kod z repozytorium (Checkout)
         uses: actions/checkout@v4
